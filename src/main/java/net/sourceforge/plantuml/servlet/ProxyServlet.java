@@ -56,13 +56,14 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 @SuppressWarnings("serial")
 public class ProxyServlet extends HttpServlet {
 
-    private String format;
+    private static final FileFormat DEFAULT_FILE_FORMAT = FileFormat.PNG;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         final String source = request.getParameter("src");
         final String index = request.getParameter("idx");
+        final String format = request.getParameter("fmt");
         final URL srcUrl;
         // Check if the src URL is valid
         try {
@@ -85,7 +86,7 @@ public class ProxyServlet extends HttpServlet {
         System.out.println("uml=" + uml);
 
         // generate the response
-        DiagramResponse dr = new DiagramResponse(response, getOutputFormat());
+        DiagramResponse dr = new DiagramResponse(response, getOutputFormat(format));
         try {
             dr.sendDiagram(uml);
         } catch (IIOException iioe) {
@@ -117,17 +118,30 @@ public class ProxyServlet extends HttpServlet {
         return "";
     }
 
-    private FileFormat getOutputFormat() {
-        if (format == null) {
-            return FileFormat.PNG;
+    private FileFormat getOutputFormat(final String format) {
+        //Check for empty format parameter
+        if (format == null || format.trim().isEmpty()) {
+            return DEFAULT_FILE_FORMAT;
         }
-        if (format.equals("svg")) {
-            return FileFormat.SVG;
-        }
-        if (format.equals("txt")) {
+        final String outputFormat = format.trim();
+        //Handle 'special' cases
+        if ("txt".equalsIgnoreCase(outputFormat)) {
             return FileFormat.UTXT;
         }
-        return FileFormat.PNG;
+        if ("ascii".equalsIgnoreCase(outputFormat)) {
+            return FileFormat.ATXT;
+        }
+        if ("gif".equalsIgnoreCase(outputFormat)) {
+            return FileFormat.ANIMATED_GIF;
+        }
+        //Handle 'standard' FileFormats.
+        for (FileFormat fileFormat : FileFormat.values()) {
+            if (fileFormat.name().equalsIgnoreCase(outputFormat)) {
+                return fileFormat;
+            }
+        }
+        //Default fallback
+        return DEFAULT_FILE_FORMAT;
     }
 
     private HttpURLConnection getConnection(final URL url) throws IOException {
