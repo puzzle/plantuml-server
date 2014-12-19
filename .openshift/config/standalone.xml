@@ -431,10 +431,10 @@
 					startlevel="1" />
 			</capabilities>
 		</subsystem> -->
-<!--		<subsystem xmlns="urn:jboss:domain:pojo:1.0" />
+<!--		<subsystem xmlns="urn:jboss:domain:pojo:1.0" /> -->
 		<subsystem xmlns="urn:jboss:domain:remoting:1.1">
 			<connector name="remoting-connector" socket-binding="remoting" />
-		</subsystem> -->
+		</subsystem>
 <!--		<subsystem xmlns="urn:jboss:domain:resource-adapters:1.0" />
 		<subsystem xmlns="urn:jboss:domain:sar:1.0" /> -->
 		<subsystem xmlns="urn:jboss:domain:security:1.2">
@@ -527,7 +527,7 @@
 		<socket-binding name="messaging" port="${env.OPENSHIFT_JBOSSEAP_MESSAGING_PORT}" />
 		<socket-binding name="osgi-http" interface="management"
 			port="8090" />
-<!--		<socket-binding name="remoting" port="${env.OPENSHIFT_JBOSSEAP_REMOTING_PORT}" /> -->
+-		<socket-binding name="remoting" port="${env.OPENSHIFT_JBOSSEAP_REMOTING_PORT}" />
 		<socket-binding name="txn-recovery-environment" port="4712" />
 		<socket-binding name="txn-status-manager" port="4713" />
 		<outbound-socket-binding name="mail-smtp">
