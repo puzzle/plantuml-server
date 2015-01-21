@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="plantumlservlet:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="plantuml.war">
+      <element id="artifact" artifact-name="plantumlservlet:war exploded" />
+    </root>
+  </artifact>
+</component>
